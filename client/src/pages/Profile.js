@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Popover, WhiteSpace } from "antd-mobile";
+import { WhiteSpace } from "antd-mobile";
+import { Popover, Button } from "antd";
 import ProfilePic from "../components/Picture/ProfilePic";
 import LinkedinIcon from "../components/Icon/Linkedin-blue";
 import TwitterIcon from "../components/Icon/Twitter-blue";
@@ -90,37 +91,25 @@ const PlaceholderIcon = styled.div`
 `;
 
 const SectionContainer = styled.div``;
+const Item = Popover.Item;
 const Profile = (props) => {
   const { firstName, lastName, about, email, location } = props.user;
   const needHelp = true;
-  const Item = Popover.Item;
-
   const [modal, setModal] = useState(false);
+
+  const popoverContent = (
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <Link to="/edit-profile">Edit Profile</Link>
+      <Link to="/edit-account">Edit Account</Link>
+    </div>
+  );
   const popover = (props) => {
     return (
       <Popover
-        mask
-        overlay={[
-          <Item key="editAccountInfo" value="Edit Account Information">
-            Edit Account Information
-          </Item>,
-          <Item
-            key="editProfile"
-            value="Edit Profile"
-            style={{ whiteSpace: "nowrap" }}
-          >
-            Edit Profile
-          </Item>,
-        ]}
-        align={{
-          overflow: { adjustY: 0, adjustX: 0 },
-          offset: [0, 10],
-        }}
-        onSelect={(opt) =>
-          opt.key === "editAccountInfo"
-            ? props.history.push("/edit-account")
-            : props.history.push("/edit-profile")
-        }
+        mask="true"
+        trigger="click"
+        content={popoverContent}
+        placement="bottomRight"
       >
         <EditIcon />
       </Popover>
@@ -222,7 +211,7 @@ const userInfoStyle = {
   marginRight: "2.5rem",
   borderRadius: "10px",
   position: "relative",
-  zIndex: "8",
+  zIndex: "1",
   filter: "drop-shadow(#00000012 5px 0px 5px)",
   flexDirection: "column",
   display: "flex",
