@@ -2,7 +2,6 @@ import { Button, Flex, WhiteSpace, Toast } from "antd-mobile";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-
 import { PASSWORD_MIN_LENGTH } from "../config";
 import {
   authWithSocialProvider,
@@ -21,8 +20,10 @@ import twitter from "~/assets/icons/social-twitter.svg";
 import facebook from "~/assets/icons/social-facebook.svg";
 import gmail from "~/assets/icons/social-google.svg";
 import linkedin from "~/assets/icons/social-linkedin.svg";
+import loginImage from "~/assets/icons/social-media-login.svg";
+import signupImage from "~/assets/icons/social-media-signup.svg";
 
-import { theme } from "../constants/theme";
+import { theme, mq } from "../constants/theme";
 const { colors } = theme;
 const { typography } = theme;
 
@@ -37,7 +38,10 @@ const Title = styled.h1`
 
 const InputWrapper = styled.div`
   margin: 2.2rem auto;
-  width: 100%;
+  width: 50%;
+  @media only screen and ${mq.tablet.narrow.max} {
+    width: 100%;
+  }
 `;
 
 const StyleInput = {
@@ -72,13 +76,17 @@ const SectionDiv = styled.div`
     display: inline-block;
     content: "";
     border-top: 0.1rem solid ${colors.lightGray};
-    width: 3rem;
+    width: 25%;
     margin: 0 0.5rem;
     transform: translateY(-0.3rem);
   }
+  margin-bottom: 2rem;
+  @media only screen and ${mq.tablet.narrow.max} {
+    margin-bottom: 0;
+  }
 `;
 
-const FlexBox = styled(Flex).attrs(props => ({
+const FlexBox = styled(Flex).attrs((props) => ({
   wrap: "wrap",
   justify: "center",
 }))``;
@@ -88,9 +96,12 @@ const SocialButton = styled(Button)`
   border-radius: unset;
   display: flex;
   height: 4.8rem;
-  margin: 0.5rem;
+  margin: 2rem;
   padding: 2.5rem;
   width: 13.6rem;
+  @media only screen and ${mq.tablet.narrow.max} {
+    margin: 0.5rem;
+  }
 `;
 
 const ButtonText = styled.span`
@@ -100,6 +111,7 @@ const ButtonText = styled.span`
 `;
 
 const AuthLink = styled.a`
+  display: inline-block;
   font-family: ${typography.font.family.display};
   font-style: normal;
   font-weight: 500;
@@ -107,6 +119,30 @@ const AuthLink = styled.a`
   line-height: 2.1rem;
   text-align: center;
   color: ${colors.royalBlue};
+  margin-bottom: 5rem;
+  @media only screen and ${mq.tablet.narrow.max} {
+    width: 100%;
+    margin-bottom: 0rem;
+  }
+`;
+
+const SignUpDiv = styled.div`
+  text-align: center;
+  width: 57%;
+  margin-top: 10rem;
+  @media only screen and ${mq.tablet.narrow.max} {
+    width: 100%;
+    margin-top: 0rem;
+  }
+`;
+
+const ImageContainer = styled.div`
+  width: 43%;
+  display: flex;
+  background-color: ${colors.selago};
+  @media only screen and ${mq.tablet.narrow.max} {
+    width: 0%;
+  }
 `;
 
 const Login = ({ isLoginForm }) => {
@@ -123,19 +159,19 @@ const Login = ({ isLoginForm }) => {
     }
   }, [code, state, dispatch]);
 
-  const handleInputChangeEmail = e => {
+  const handleInputChangeEmail = (e) => {
     setEmail(e.target.value);
   };
 
-  const handleInputChangePassword = e => {
+  const handleInputChangePassword = (e) => {
     setPassword(e.target.value);
   };
 
-  const handleInputChangeConfirmPassword = e => {
+  const handleInputChangeConfirmPassword = (e) => {
     setConfirmPassword(e.target.value);
   };
 
-  const handleLoginWithEmail = evt => {
+  const handleLoginWithEmail = (evt) => {
     evt.preventDefault();
     if (!validateEmail(email)) {
       Toast.fail("Invalid email address!", 3);
@@ -148,7 +184,7 @@ const Login = ({ isLoginForm }) => {
     dispatch(loginWithEmail({ email, password }));
   };
 
-  const handleSignup = evt => {
+  const handleSignup = (evt) => {
     evt.preventDefault();
     // todo: add inline validation (disable button / indicate error on form)
     /*if (!validateEmail(email)) {
@@ -162,98 +198,106 @@ const Login = ({ isLoginForm }) => {
     dispatch(signup({ email, password, confirmPassword }));
   };
 
-  const handleSocialLogin = provider => {
+  const handleSocialLogin = (provider) => {
     window.location.href = `/api/auth/oauth/${provider}`;
   };
 
   return (
-    <div className="text-center">
-      <Title>{isLoginForm ? "Sign In" : "Sign Up"}</Title>
-      <form id="login-password" method="POST">
-        <InputWrapper>
-          <Label for="email" style={StyleLabel} label="E-mail" />
-          <Input
-            type="email"
-            name="email"
-            required
-            placeholder="Enter email address"
-            value={email}
-            onChange={handleInputChangeEmail}
-            style={StyleInput}
-          />
-        </InputWrapper>
-        <InputWrapper>
-          <Label for="password" style={StyleLabel} label="Password" />
-          <Input
-            type="password"
-            name="password"
-            required
-            placeholder="Enter password"
-            value={password}
-            onChange={handleInputChangePassword}
-            style={StyleInput}
-          />
-        </InputWrapper>
-        <SubmitButton
-          title={isLoginForm ? "Sign In" : "Sign Up"}
-          onClick={isLoginForm ? handleLoginWithEmail : handleSignup}
+    <div style={{ display: "flex", flexDirection: "row" }}>
+      <ImageContainer>
+        <SvgIcon
+          src={isLoginForm ? loginImage : signupImage}
+          style={{ margin: "auto" }}
         />
-      </form>
-      <WhiteSpace />
-      <WhiteSpace />
-      {isLoginForm ? (
-        <>
+      </ImageContainer>
+      <SignUpDiv>
+        <Title>{isLoginForm ? "Sign In" : "Sign Up"}</Title>
+        <form id="login-password" method="POST">
+          <InputWrapper>
+            <Label for="email" style={StyleLabel} label="E-mail" />
+            <Input
+              type="email"
+              name="email"
+              required
+              placeholder="Enter email address"
+              value={email}
+              onChange={handleInputChangeEmail}
+              style={StyleInput}
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <Label for="password" style={StyleLabel} label="Password" />
+            <Input
+              type="password"
+              name="password"
+              required
+              placeholder="Enter password"
+              value={password}
+              onChange={handleInputChangePassword}
+              style={StyleInput}
+            />
+          </InputWrapper>
+          <SubmitButton
+            title={isLoginForm ? "Sign In" : "Sign Up"}
+            onClick={isLoginForm ? handleLoginWithEmail : handleSignup}
+          />
+        </form>
+        <WhiteSpace />
+        <WhiteSpace />
+        {isLoginForm ? (
+          <>
+            <p>
+              <AuthLink href="/auth/forgot-password">Forgot password?</AuthLink>
+            </p>
+            <p>
+              <AuthLink href="/auth/signup">
+                Don't have an account? <u>Sign Up</u>
+              </AuthLink>
+            </p>
+          </>
+        ) : (
           <p>
-            <AuthLink href="/auth/forgot-password">Forgot password?</AuthLink>
-          </p>
-          <p>
-            <AuthLink href="/auth/signup">
-              Don't have an account? <u>Sign Up</u>
+            <AuthLink href="/auth/login">
+              Already have an account? <u>Sign In</u>
             </AuthLink>
           </p>
-        </>
-      ) : (
-        <p>
-          <AuthLink href="/auth/login">
-            Already have an account? <u>Sign In</u>
-          </AuthLink>
-        </p>
-      )}
-      <WhiteSpace />
-      <SectionDiv>
-        {isLoginForm ? "Or Log in with" : "Or Sign up with"}
-      </SectionDiv>
-      <WhiteSpace />
-      <FlexBox>
-        <SocialButton
-          style={StyleSocialIcon}
-          icon={<SvgIcon src={facebook} />}
-          onClick={() => handleSocialLogin("facebook")}
-        >
-          <ButtonText>Facebook</ButtonText>
-        </SocialButton>
-        <SocialButton
-          style={StyleSocialIcon}
-          icon={<SvgIcon src={gmail} />}
-          onClick={() => handleSocialLogin("google")}
-        >
-          <ButtonText>Gmail</ButtonText>
-        </SocialButton>
-        <SocialButton
-          style={StyleSocialIcon}
-          icon={<SvgIcon src={twitter} />}
-          onClick={() => handleSocialLogin("twitter")}
-        >
-          <ButtonText>Twitter</ButtonText>
-        </SocialButton>
-        <SocialButton
-          style={StyleSocialIcon}
-          icon={<SvgIcon src={linkedin} />}
-          onClick={() => handleSocialLogin("linkedin")}
-        >
-          <ButtonText>Linkedin</ButtonText>
-        </SocialButton>
-      </FlexBox>
+        )}
+        <WhiteSpace />
+        <SectionDiv>
+          {isLoginForm ? "Or Log in with" : "Or Sign up with"}
+        </SectionDiv>
+        <WhiteSpace />
+        <FlexBox>
+          <SocialButton
+            style={StyleSocialIcon}
+            icon={<SvgIcon src={facebook} />}
+            onClick={() => handleSocialLogin("facebook")}
+          >
+            <ButtonText>Facebook</ButtonText>
+          </SocialButton>
+          <SocialButton
+            style={StyleSocialIcon}
+            icon={<SvgIcon src={gmail} />}
+            onClick={() => handleSocialLogin("google")}
+          >
+            <ButtonText>Gmail</ButtonText>
+          </SocialButton>
+          <SocialButton
+            style={StyleSocialIcon}
+            icon={<SvgIcon src={twitter} />}
+            onClick={() => handleSocialLogin("twitter")}
+          >
+            <ButtonText>Twitter</ButtonText>
+          </SocialButton>
+          <SocialButton
+            style={StyleSocialIcon}
+            icon={<SvgIcon src={linkedin} />}
+            onClick={() => handleSocialLogin("linkedin")}
+          >
+            <ButtonText>Linkedin</ButtonText>
+          </SocialButton>
+        </FlexBox>
+      </SignUpDiv>
     </div>
   );
 };
