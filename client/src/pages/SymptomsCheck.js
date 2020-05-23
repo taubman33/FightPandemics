@@ -592,7 +592,7 @@ const SymptomsCheck = () => {
             <Icon type="cross" size="lg" />
           </button>
         </div>
-        <img className="warning-icon" src={Disclaimer} />
+        <img className="warning-icon" src={Disclaimer} alt="disclaimer" />
         <Under18 />
         <Link to="/feed">
           <ColoredButton>Done</ColoredButton>
@@ -960,7 +960,7 @@ const SymptomsCheck = () => {
             <Icon type="cross" size="lg" />
           </button>
         </div>
-        <img className="warning-icon" src={Disclaimer} />
+        <img className="warning-icon" src={Disclaimer} alt="disclaimer" />
         <h2>We are not a provider of healthcare services</h2>
         <h6>
           This service is provided in good faith for those who are otherwise

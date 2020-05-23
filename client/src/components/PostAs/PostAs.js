@@ -9,7 +9,6 @@ import {
   SET_VALUE,
   SET_POSTS,
 } from "hooks/actions/feedActions";
-import { theme } from "constants/theme";
 import {
   Container,
   Option,

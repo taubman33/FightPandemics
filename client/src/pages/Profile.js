@@ -10,7 +10,6 @@ import { theme } from "constants/theme";
 
 import styled from "styled-components";
 import { getInitials } from "utils/userInfo";
-import { Link } from "react-router-dom";
 import fakePosts from "assets/data/fakePosts"; // feed
 import Posts from "components/Feed/Posts"; // feed
 import FeedWrapper from "components/Feed/FeedWrapper"; //feed
